@@ -1,0 +1,7 @@
+parameters:
+#    ockcyp_todo.example.class: Ockcyp\Bundle\TodoBundle\Example
+
+services:
+#    ockcyp_todo.example:
+#        class: %ockcyp_todo.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

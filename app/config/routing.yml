@@ -1,0 +1,3 @@
+ockcyp_todo:
+    resource: "@OckcypTodoBundle/Resources/config/routing.yml"
+    prefix:   /
