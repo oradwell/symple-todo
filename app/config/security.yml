@@ -1,12 +1,28 @@
 security:
-    providers:
-        in_memory:
-            memory: ~
-
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        secured_area:
+            pattern:   ^/
+            anonymous: ~
+            http_basic:
+                realm: "Secured Demo Area"
+
         default:
             anonymous: ~
+
+    access_control:
+        - { path: ^/todo/, roles: ROLE_USER }
+        - { path: ^/todo$, roles: ROLE_USER }
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    omer:    { password: omer,    roles: 'ROLE_USER' }
+                    daniele: { password: daniele, roles: 'ROLE_USER' }
+
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext

@@ -28,6 +28,11 @@ class Todo
     protected $date_added;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $date_modified;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -83,5 +88,28 @@ class Todo
     public function getDateAdded()
     {
         return $this->date_added;
+    }
+
+    /**
+     * Set date_modified
+     *
+     * @param \DateTime $dateModified
+     * @return Todo
+     */
+    public function setDateModified($dateModified)
+    {
+        $this->date_modified = $dateModified;
+
+        return $this;
+    }
+
+    /**
+     * Get date_modified
+     *
+     * @return \DateTime 
+     */
+    public function getDateModified()
+    {
+        return $this->date_modified;
     }
 }

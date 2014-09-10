@@ -3,8 +3,9 @@
 namespace Ockcyp\Bundle\TodoBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Ockcyp\Bundle\TodoBundle\Entity\Todo;
 use Doctrine\ORM\Query;
@@ -23,6 +24,13 @@ class TodoController extends Controller
             ->getQuery()
             ->getOneOrNullResult(Query::HYDRATE_ARRAY);
 
+        if (!$result) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => 'Invalid todo ID: ' . $id
+            ), 404);
+        }
+
         return new JsonResponse($result);
     }
 
@@ -38,11 +46,20 @@ class TodoController extends Controller
         return new JsonResponse($result);
     }
 
-    public function createAction()
+    public function createAction(Request $request)
     {
+        $description = $request->request->get('desc', null);
+        if (!$description) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => 'Description cannot be empty.'
+            ), 400);
+        }
+
         $todo = new Todo;
-        $todo->setDescription('test')
-            ->setDateAdded(new DateTime);
+        $now = new DateTime;
+        $todo->setDescription($description)
+            ->setDateAdded($now);
 
         $em = $this->getDoctrine()
             ->getManager();
@@ -59,6 +76,48 @@ class TodoController extends Controller
         );
     }
 
+    public function updateAction($id, Request $request)
+    {
+        $todoRepo = $this->getDoctrine()
+            ->getRepository('OckcypTodoBundle:Todo');
+
+        $todo = $todoRepo->find($id);
+        if (!$todo) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => 'Invalid todo ID: ' . $id
+            ), 404);
+        }
+
+        $description = $request->request->get('desc', null);
+        if (!$description) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => 'Description cannot be empty.'
+            ), 400);
+        }
+
+        $todo->setDescription($description)
+            ->setDateModified(new DateTime);
+
+        $em = $this->getDoctrine()
+            ->getManager();
+
+        try {
+            $em->persist($todo);
+            $em->flush();
+        } catch (\Exception $e) {
+            return new JsonResponse(array(
+                'success' => false,
+                'error' => 'A problem occurred while deleting todo ID: ' . $id
+            ), 500);
+        }
+
+        return new JsonResponse(array(
+            'success' => true
+        ));
+    }
+
     public function deleteAction($id)
     {
         $todoRepo = $this->getDoctrine()
@@ -69,7 +128,7 @@ class TodoController extends Controller
             return new JsonResponse(array(
                 'success' => false,
                 'error' => 'Invalid todo ID: ' . $id
-            ));
+            ), 404);
         }
 
         $em = $this->getDoctrine()
@@ -82,7 +141,7 @@ class TodoController extends Controller
             return new JsonResponse(array(
                 'success' => false,
                 'error' => 'A problem occurred while deleting todo ID: ' . $id
-            ));
+            ), 500);
         }
 
         return new JsonResponse(array(

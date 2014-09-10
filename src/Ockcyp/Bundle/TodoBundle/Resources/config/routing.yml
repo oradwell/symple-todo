@@ -17,6 +17,11 @@ ockcyp_todo_create:
     defaults: { _controller: OckcypTodoBundle:Todo:create }
     methods:  [POST]
 
+ockcyp_todo_update:
+    path:     /todo/{id}
+    defaults: { _controller: OckcypTodoBundle:Todo:update }
+    methods:  [PUT]
+
 ockcyp_todo_delete:
     path:     /todo/{id}
     defaults: { _controller: OckcypTodoBundle:Todo:delete }
