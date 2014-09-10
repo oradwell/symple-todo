@@ -4,13 +4,13 @@ namespace Ockcyp\Bundle\TodoBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class DefaultControllerTest extends WebTestCase
+class TodoControllerTest extends WebTestCase
 {
-    public function testIndex()
+    public function testList()
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/');
+        $crawler = $client->request('GET', '/todo');
 
         $this->assertTrue($crawler->filter('html:contains("Hello!")')->count() > 0);
     }

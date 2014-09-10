@@ -1,3 +1,23 @@
 ockcyp_todo_homepage:
     path:     /
     defaults: { _controller: OckcypTodoBundle:Default:index }
+
+ockcyp_todo_list:
+    path:     /todo
+    defaults: { _controller: OckcypTodoBundle:Todo:list }
+    methods:  [GET]
+
+ockcyp_todo_show:
+    path:     /todo/{id}
+    defaults: { _controller: OckcypTodoBundle:Todo:show }
+    methods:  [GET]
+
+ockcyp_todo_create:
+    path:     /todo
+    defaults: { _controller: OckcypTodoBundle:Todo:create }
+    methods:  [POST]
+
+ockcyp_todo_delete:
+    path:     /todo/{id}
+    defaults: { _controller: OckcypTodoBundle:Todo:delete }
+    methods:  [DELETE]
