@@ -1,8 +1,5 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
-    "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "name": "ockcyp/symple-todo",
     "autoload": {
         "psr-0": { "": "src/", "SymfonyStandard": "app/" }
     },
